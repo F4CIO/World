@@ -1,0 +1,93 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+  <div fxFlex="95%">
+
+    <mat-card>
+      <mat-card-content class="auto-sized-font">
+        <h2>My Library</h2>
+        
+        <mat-icon mat-list-icon (click)="loadAll();" style="float: right;margin-right: 80px; margin-top: -40px;cursor: pointer;" title="Re-load from server">
+          {{refreshIconName}}
+        </mat-icon>
+        <mat-icon mat-list-icon (click)="addNew();" style="float: right;margin-right: 40px; margin-top: -40px;cursor: pointer;" title="Add new">
+          {{addIconName}}
+        </mat-icon>
+        <mat-icon mat-list-icon (click)="saveAll();" style="float: right;margin-right: 0px; margin-top: -40px;cursor: pointer;" title="Save all">
+          {{saveIconName}}
+        </mat-icon>
+
+        <table mat-table [dataSource]="dataSource" matSort >
+
+          <style>
+            ::ng-deep .mat-header-cell.verticalFix,
+            ::ng-deep .mat-cell.verticalFix {
+              padding-top: 15px;
+              overflow: hidden;
+            }
+
+            ::ng-deep .mat-header-cell.verticalFix.maxWidth150Column,
+            ::ng-deep .mat-cell.verticalFix.maxWidth150Column {
+              max-width: 150px;
+            }
+            
+            ::ng-deep .mat-cell, .mat-header-cell.verticalFix {
+              white-space: normal;
+              word-wrap: break-word;
+            }
+          </style>
+
+          <!-- Position Column -->
+          <!-- <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          </ng-container> -->
+
+          Created On Column
+          <ng-container matColumnDef="momentOfCreation">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex class="verticalFix maxWidth150Column auto-sized-font2"> Created On </th>
+            <td mat-cell *matCellDef="let element" title="{{element.momentOfLastUpdate}}" (click)="showSnackBar(element.momentOfLastUpdate)" fxFlex class="verticalFix maxWidth150Column auto-sized-font2"> {{element.momentOfCreation}} </td>
+          </ng-container>
+        
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex class="verticalFix auto-sized-font2"> Name </th>
+            <td mat-cell *matCellDef="let element" title="{{element.name}}" (click)="showSnackBar(element.name)" fxFlex class="verticalFix auto-sized-font2"> {{element.name}} </td>
+          </ng-container>
+        
+          <!-- Status Column -->
+          <!-- <ng-container matColumnDef="jobStage">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex fxFlex.gt-xs="145px" style="text-align: left;" class="verticalFix auto-sized-font2"> Status </th>
+            <td mat-cell *matCellDef="let element" title="{{element.jobStageDetails}}" (click)="showSnackBar(element.jobStageDetails)" fxFlex fxFlex.gt-xs="145px" style="text-align: left;" class="verticalFix auto-sized-font2"> {{element.jobStage}}{{element.jobProgressPercent}} </td>
+          </ng-container> -->
+          <ng-container matColumnDef="jobStage">
+            <th mat-header-cell *matHeaderCellDef fxFlex [fxFlex.gt-xs]="statusColumnWidth" mat-sort-header class="verticalFix auto-sized-font2" > Status </th>
+            <td mat-cell *matCellDef="let element" title="{{element.jobStageDetails}}" (click)="showSnackBar(element.jobStageDetails)" fxFlex [fxFlex.gt-xs]="statusColumnWidth"  class="verticalFix auto-sized-font2"> {{element.jobStage}}</td>
+          </ng-container>
+        
+          <!-- Operation Column -->
+          <!-- <ng-container matColumnDef="operation">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Operation </th>
+            <td mat-cell *matCellDef="let element"> {{element.operation}} </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="operation">
+            <th mat-header-cell *matHeaderCellDef> Operation </th>
+            <td mat-cell *matCellDef="let element" class="verticalFix auto-sized-font2">
+              <!-- Add edit and delete buttons here -->
+              <button mat-icon-button (click)="editItem(element)" title="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteItem(element)" title="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

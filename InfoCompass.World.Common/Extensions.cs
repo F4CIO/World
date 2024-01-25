@@ -1,0 +1,3 @@
+﻿namespace InfoCompass.World.Common;
+
+

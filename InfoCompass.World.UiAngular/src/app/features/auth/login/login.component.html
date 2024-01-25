@@ -1,0 +1,54 @@
+<div class="container login-container" fxLayout="row" fxLayoutAlign="center center">
+    <form [formGroup]="form" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
+        <mat-card>
+            <mat-card-title style="font-size:large;cursor: pointer;" title="Go to home page" (click)="goToHomePage();"><span style="word-break: break-all;">{{getInstanceName()}}</span></mat-card-title>
+            <mat-card-subtitle>Log in to your account</mat-card-subtitle>
+            <mat-card-content>
+
+                <mat-form-field class="full-width">
+                    <input id="emailInput" matInput placeholder="Email" formControlName="Username" autocomplete="email" type="email">
+                    <mat-error *ngIf="form.controls['Username'].hasError('controlSpecificError')">
+                        {{ form.controls['Username'].getError('controlSpecificError') }}
+                    </mat-error>
+                    <!-- <mat-error id="invalidEmailError" *ngIf="form.controls['email'].hasError('email')">
+                        Please enter a valid email address
+                    </mat-error>
+                    <mat-error id="requiredEmailError" *ngIf="form.controls['email'].hasError('required')">
+                        Email is
+                        <strong>required</strong>
+                    </mat-error>                     -->
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <input id="passwordInput" matInput placeholder="Password" formControlName="Password" type="password" autocomplete="current-password">
+                    <mat-error *ngIf="form.controls['Password'].hasError('controlSpecificError')">
+                        {{ form.controls['Password'].getError('controlSpecificError') }}
+                    </mat-error>
+                    <!-- <mat-error id="requiredPasswordError" *ngIf="form.controls['email'].hasError('required')">
+                        Password is
+                        <strong>required</strong>
+                    </mat-error> -->
+                </mat-form-field>
+
+                <div class="full-width">
+                    <mat-slide-toggle formControlName="rememberMe">Remember my email address</mat-slide-toggle>
+                </div>
+                <br>
+                <mat-error *ngIf="generalErrorMessage">
+                    {{generalErrorMessage}}
+                </mat-error>
+            </mat-card-content>
+
+            <mat-card-actions class="login-actions">
+                <button mat-raised-button id="login" color="primary" [disabled]="form.invalid || loading || disableSubmit" (click)="submitForm()">Login</button>
+                
+                <button mat-button id="resetPassword" (click)="resetPassword()" type="button" class="right-aligned">Forgot Password?</button>
+                <button mat-button id="register" (click)="register()" type="button" class="right-aligned">Register</button>
+                <div style="clear: both;"></div>
+            </mat-card-actions>
+
+        </mat-card>
+
+        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    </form>
+</div>

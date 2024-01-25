@@ -1,0 +1,39 @@
+<form [formGroup]="form">
+  <p>You can edit your profile details here.</p>
+
+  <div fxLayout="row">
+
+    <div fxFlex="40%" fxFlex.md="60%" fxFlex.sm="50%" fxFlex.xs="100%">
+
+      <mat-form-field class="full-width">
+        <input matInput placeholder="First Name" formControlName="FirstName">
+
+        <mat-error *ngIf="form.controls['FirstName'].hasError('required')">
+          Please enter your first name
+        </mat-error>
+        <mat-error *ngIf="form.controls['FirstName'].hasError('controlSpecificError')">
+          {{ form.controls['FirstName'].getError('controlSpecificError') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Last Name" formControlName="LastName"  autocomplete="last-name">
+
+        <mat-error *ngIf="form.controls['LastName'].hasError('required')">
+          Please enter your last name
+        </mat-error>
+        <mat-error *ngIf="form.controls['LastName'].hasError('controlSpecificError')">
+          {{ form.controls['LastName'].getError('controlSpecificError') }}
+        </mat-error>
+      </mat-form-field>
+      <br/>
+      <mat-error *ngIf="generalErrorMessage">
+        {{generalErrorMessage}}
+      </mat-error>
+      <button mat-raised-button color="primary" [disabled]="form.invalid || loading || disableSubmit" (click)="submitForm()">Save</button>
+
+    </div>
+
+  </div>
+
+</form>

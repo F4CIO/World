@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34003.232
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoCompass.World.BusinessLogic", "InfoCompass.World.BusinessLogic\InfoCompass.World.BusinessLogic.csproj", "{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoCompass.World.Common", "InfoCompass.World.Common\InfoCompass.World.Common.csproj", "{1A96B5BC-66F3-4B15-8F16-A78647340F36}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoCompass.World.DataAccessByFileSystem", "InfoCompass.World.DataAccessByFileSystem\InfoCompass.World.DataAccessByFileSystem.csproj", "{B387A45C-1787-4F30-96E7-7737A57FEDDC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoCompass.World.DataAccessContracts", "InfoCompass.World.DataAccessContracts\InfoCompass.World.DataAccessContracts.csproj", "{ECE68EBC-AA02-4F24-91D1-BEE236657043}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoCompass.World.UiWebApi", "InfoCompass.World.UiWebApi\InfoCompass.World.UiWebApi.csproj", "{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{78210164-B4F9-4175-B49A-DDC2EF9FEF99}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CraftSynth.BuildingBlocks.Generated", "CraftSynth.BuildingBlocks.Generated\CraftSynth.BuildingBlocks.Generated.csproj", "{5CAB7275-578F-492A-A7EA-05C280FCF694}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CraftSynth_Debug_With_Full_Building_Blocks|Any CPU = CraftSynth_Debug_With_Full_Building_Blocks|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		InfoCompass_Debug_With_Full_Building_Blocks|Any CPU = InfoCompass_Debug_With_Full_Building_Blocks|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B9B72F6-E805-4A49-83E5-F2C252D7A66C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A96B5BC-66F3-4B15-8F16-A78647340F36}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A96B5BC-66F3-4B15-8F16-A78647340F36}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{1A96B5BC-66F3-4B15-8F16-A78647340F36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A96B5BC-66F3-4B15-8F16-A78647340F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A96B5BC-66F3-4B15-8F16-A78647340F36}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A96B5BC-66F3-4B15-8F16-A78647340F36}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{1A96B5BC-66F3-4B15-8F16-A78647340F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A96B5BC-66F3-4B15-8F16-A78647340F36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B387A45C-1787-4F30-96E7-7737A57FEDDC}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{B387A45C-1787-4F30-96E7-7737A57FEDDC}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{B387A45C-1787-4F30-96E7-7737A57FEDDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B387A45C-1787-4F30-96E7-7737A57FEDDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B387A45C-1787-4F30-96E7-7737A57FEDDC}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{B387A45C-1787-4F30-96E7-7737A57FEDDC}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{B387A45C-1787-4F30-96E7-7737A57FEDDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B387A45C-1787-4F30-96E7-7737A57FEDDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECE68EBC-AA02-4F24-91D1-BEE236657043}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE68EBC-AA02-4F24-91D1-BEE236657043}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{ECE68EBC-AA02-4F24-91D1-BEE236657043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE68EBC-AA02-4F24-91D1-BEE236657043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECE68EBC-AA02-4F24-91D1-BEE236657043}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE68EBC-AA02-4F24-91D1-BEE236657043}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{ECE68EBC-AA02-4F24-91D1-BEE236657043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECE68EBC-AA02-4F24-91D1-BEE236657043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE006A0A-4CC1-48A5-9B66-462E95E21B4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CAB7275-578F-492A-A7EA-05C280FCF694}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = CraftSynth_Debug_With_Full_Building_Blocks|Any CPU
+		{5CAB7275-578F-492A-A7EA-05C280FCF694}.CraftSynth_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = CraftSynth_Debug_With_Full_Building_Blocks|Any CPU
+		{5CAB7275-578F-492A-A7EA-05C280FCF694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CAB7275-578F-492A-A7EA-05C280FCF694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CAB7275-578F-492A-A7EA-05C280FCF694}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CAB7275-578F-492A-A7EA-05C280FCF694}.InfoCompass_Debug_With_Full_Building_Blocks|Any CPU.Build.0 = Debug|Any CPU
+		{5CAB7275-578F-492A-A7EA-05C280FCF694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CAB7275-578F-492A-A7EA-05C280FCF694}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4526CD3F-1504-4FF8-BA05-BAB2BB125C4F}
+	EndGlobalSection
+EndGlobal

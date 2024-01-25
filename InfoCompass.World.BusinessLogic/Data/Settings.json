@@ -1,0 +1,45 @@
+[
+  {
+    "Id": 1,
+    "UserId": 1,
+    "Enable": true,
+    "InstanceName": "World",
+    "Version": "v1",
+    "Description": ".NET application example",
+    "ContactName": "Nenad Curcin",
+    //ContactUs messages arrive here
+    "ContactEmail": "World@InfoCompass.com",
+    "ContactUrl": "http://www.craftsynth.com",
+    "License": true,
+    "LicenseName": "MIT License",
+    "LicenseUrl": "http://www.craftsynth.com",
+    //Folder where to pickup .settings.json files to process. Can be absolute like C:\\Project1\Books or relative like \\Books. Don't forget double backslash due to json format.
+    "DataFolderPath": "\\Data",
+    "LogLevelForLogSink_FilePerUserPerJob": 0,
+    "LogLevelForLogSink_Db": 0,
+
+    "MailServerHostName": "mail.craftsynth.com",
+    "MailServerPort": 587,
+    "MailServerUsername": "World@InfoCompass.com",
+    "MailServerPassword": "PPP.bg.PPP",
+    "MailServerIgnoreCertificateErrors": true,
+    "MailServerFromEMail": "World@InfoCompass.com",
+    "MailServerFromName": "World Team",
+
+    //These people will receive mail notifications of log events
+    "LogEventsMailNotifications_ReceiversCsv": "World@InfoCompass.com",
+    //Mail will be sent for theses log events. Put * for all or put csv or LogCategoryAndTitle names.
+    "LogEventsMailNotifications_CsvOfLogCategoryAndTitleForWhichToMailNotifications": "*",
+    //Mail will not be sent for theses log events. Put * for all or put csv or LogCategoryAndTitle names.
+    "LogEventsMailNotifications_CsvOfLogCategoryAndTitleForWhichNotToMailNotifications": "UserAction__User_Posted_Message,UserAction__Api_Called,UserMessage__Other,InternalEvent__Other,InternalEvent__Debug",
+    //separate phrases by | char. If any of phrase is found in email body that is about to be sent mail sending will be aborted  
+    "LogEventsMailNotifications_CsvOfMailBodyPhrasesForWhichNotToMailNotifications": "",
+
+    "LoginExpirationPeriodInMinutes": 1440,
+    "LoginSecretKeyForJwt": "0840925a-9d71-446d-ab26-d3170243daff",
+
+    "GuiUrl": "http://localhost:4200",
+    //Unfinished jobs after this time will be marked as Errored
+    "TimeoutForJobsInMinutes": 1440
+  }
+]

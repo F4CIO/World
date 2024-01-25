@@ -1,0 +1,10 @@
+{
+  "Main": {
+    //Development or Production
+    "Environment": "Development",
+    //Can be absolute like C:\\Project1\Books or relative like \\Books. Don't forget double backslash due to json format.
+    "DataFolderPath": "\\Data",
+    //this specifies from which urls request are acceped and not rejected with CORS error
+    "AllowedOriginsCsv": "http://localhost:4200,http://localhost:5265,http://bookgenerator.craftsynth.com,http://booksynth.com,https://booksynth.com,http://www.booksynth.com,https://www.booksynth.com"
+  }
+}

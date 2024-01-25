@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BaseOutputPath>..\bin</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\InfoCompass.World.Common\GlobalUsings.cs" Link="GlobalUsings.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.24" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CraftSynth.BuildingBlocks.Generated\CraftSynth.BuildingBlocks.Generated.csproj" />
+    <ProjectReference Include="..\InfoCompass.World.BusinessLogic\InfoCompass.World.BusinessLogic.csproj" />
+    <ProjectReference Include="..\InfoCompass.World.Common\InfoCompass.World.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="RegenerateApiClientGeneratedTsFile.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+	<Target Name="NSwag" AfterTargets="Build">
+		<!-- Run the NSwag command line tool to generate the TypeScript client -->
+		<!--<Exec Command="$(NSwagExe_Net50) openapi2tsclient /input:$(OutputPath)swagger.json /output:InfoCompass.World.UiAngular\src\app\shared\api-client.generated.ts" />-->
+	</Target>
+</Project>

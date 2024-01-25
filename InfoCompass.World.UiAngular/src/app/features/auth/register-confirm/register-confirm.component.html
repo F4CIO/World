@@ -1,0 +1,26 @@
+<div class="container login-container" fxLayout="row" fxLayoutAlign="center center">
+  <form [formGroup]="form" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
+      <mat-card>
+          <mat-card-title style="font-size: large;cursor: pointer;" title="Go to home page" (click)="goToHomePage();">{{getInstanceName()}}</mat-card-title>
+          <mat-card-subtitle>Registration Confirmation</mat-card-subtitle>
+          <mat-card-content>
+            <div *ngIf="!this.executed">
+                <p>Please wait...</p>
+            </div>
+              
+            <mat-error *ngIf="generalErrorMessage">
+                {{generalErrorMessage}}
+            </mat-error>
+            
+          </mat-card-content>
+
+          <mat-card-actions *ngIf="this.executed" class="login-actions">              
+              <button id="cancel" mat-button (click)="this.goToRegisterPage()">Register</button>              
+              <button id="cancel" mat-button (click)="this.goToLoginPage()" class="right-aligned">Login</button>
+          </mat-card-actions>
+
+      </mat-card>
+
+      <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  </form>
+</div>

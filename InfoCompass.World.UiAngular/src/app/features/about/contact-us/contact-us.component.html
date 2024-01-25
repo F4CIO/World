@@ -1,0 +1,53 @@
+<div class="container login-container" fxLayout="row" fxLayoutAlign="center top">
+  <form  [formGroup]="form" fxFlex="95%" fxFlex.sm="50%" fxFlex.xs="90%">
+      <mat-card *ngIf="!this.requestSucceeded">
+          <mat-card-title style="font-size: large;" (click)="goToHomePage();">{{getInstanceName()}}</mat-card-title>
+          <mat-card-subtitle>Contact Us</mat-card-subtitle>
+          <mat-card-content>
+            <p>Have a question, feature request, suggestion or complaint? Please write us here!</p>
+            <mat-form-field class="full-width">
+              <textarea placeholder="Your Message" formControlName="Message" autocomplete="Message" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" [cdkAutosizeMinRows]="textAreaMinRows" [cdkAutosizeMaxRows]="textAreaMaxRows" class="resizable-textarea"></textarea>                        
+              <mat-error *ngIf="form.controls['Message'].hasError('controlSpecificError')">
+                {{ form.controls['Message'].getError('controlSpecificError') }}
+              </mat-error>
+            </mat-form-field>
+
+              <mat-form-field>
+                <input matInput placeholder="Your EMail (optional)" formControlName="UserEMail" type="text" autocomplete="UserEMail">
+                        
+                <mat-error *ngIf="form.controls['UserEMail'].hasError('controlSpecificError')">
+                  {{ form.controls['UserEMail'].getError('controlSpecificError') }}
+                </mat-error>
+              </mat-form-field> 
+              
+
+              <mat-error *ngIf="generalErrorMessage">
+                {{generalErrorMessage}}
+            </mat-error>
+          </mat-card-content>
+
+          <mat-card-actions class="login-actions">
+              <button id="submit" mat-raised-button color="primary" [disabled]="form.invalid || loading || disableSubmit" (click)="submitForm()">Send</button>
+              <button id="cancel" mat-button (click)="cancel()" class="right-aligned">Back to Dashboard</button>
+          </mat-card-actions>
+
+      </mat-card>
+
+      <mat-card *ngIf="this.requestSucceeded">
+        <mat-card-title style="font-size: large;" (click)="goToHomePage();">{{getInstanceName()}}</mat-card-title>
+        <mat-card-subtitle>Contact Us</mat-card-subtitle>
+        <mat-card-content> 
+          <div style="text-align: center;">  
+            Thank you for your message! We will respond as soon as possible.
+          </div>   
+          <mat-card-actions class="login-actions">            
+            <button id="cancel" mat-button (click)="cancel()" class="right-aligned">OK</button>
+          </mat-card-actions>  
+          <br/>         
+        </mat-card-content>
+         
+    </mat-card>
+
+      <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  </form>
+</div>

@@ -1,0 +1,115 @@
+<div class="container login-container" fxLayout="row" fxLayoutAlign="center center">
+  <form  [formGroup]="form" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
+      <mat-card *ngIf="!this.requestSucceeded">
+          <mat-card-title style="font-size: large;cursor: pointer;" title="Go to home page" (click)="goToHomePage();">{{getInstanceName()}}</mat-card-title>
+          <mat-card-subtitle>Register new account</mat-card-subtitle>
+          <mat-card-content>
+            
+              <!-- <mat-form-field class="full-width">
+                  <input id="emailInput" matInput readonly disabled [value]="email">
+              </mat-form-field> -->
+
+              <mat-form-field class="full-width">
+                <input matInput placeholder="First Name (optional)" formControlName="FirstName" type="text" autocomplete="FirstName">
+                        
+                <!-- <mat-error *ngIf="form.controls['FirstName'].hasError('required')">
+                  Please enter value
+                </mat-error> -->
+                <mat-error *ngIf="form.controls['FirstName'].hasError('controlSpecificError')">
+                  {{ form.controls['FirstName'].getError('controlSpecificError') }}
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Last Name (optional)" formControlName="LastName" type="text" autocomplete="LastName">
+                        
+                <mat-error *ngIf="form.controls['LastName'].hasError('controlSpecificError')">
+                  {{ form.controls['LastName'].getError('controlSpecificError') }}
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <input matInput placeholder="EMail" formControlName="EMail" type="text" autocomplete="EMail">
+                        
+                <mat-error *ngIf="form.controls['EMail'].hasError('controlSpecificError')">
+                  {{ form.controls['EMail'].getError('controlSpecificError') }}
+                </mat-error>
+              </mat-form-field> 
+              
+              <mat-checkbox formControlName="SubscribeMe">Subscribe Me</mat-checkbox>
+              <mat-error *ngIf="form.controls['SubscribeMe'].hasError('controlSpecificError')">
+                {{ form.controls['SubscribeMe'].getError('controlSpecificError') }}
+              </mat-error>
+
+              <mat-form-field class="full-width">
+                <input id="passwordInput" matInput placeholder="New Password" formControlName="NewPassword" 
+                  [type]="hideNewPassword ? 'password' : 'text'" autocomplete="new-password"                  
+                  >
+                <mat-icon id="togglePasswordVisibility" matSuffix (click)="hideNewPassword = !hideNewPassword">
+                  {{hideNewPassword ? 'visibility' : 'visibility_off'}}
+                </mat-icon>
+          
+                <!-- <mat-error *ngIf="form.controls['NewPassword'].hasError('required')">
+                  Please enter a new password
+                </mat-error> -->
+                <mat-error *ngIf="form.controls['NewPassword'].hasError('controlSpecificError')">
+                  {{ form.controls['NewPassword'].getError('controlSpecificError') }}
+              </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <input id="passwordConfirmInput" matInput placeholder="New Password Confirmation" formControlName="NewPasswordRepeated" 
+                  [type]="hideNewPasswordRepeated ? 'password' : 'text'" autocomplete="new-password"
+                  >
+                <mat-icon id="togglePasswordConfirmVisibility" matSuffix (click)="hideNewPasswordRepeated = !hideNewPasswordRepeated">
+                  {{hideNewPasswordRepeated ? 'visibility' : 'visibility_off'}}
+                </mat-icon>
+          
+                <!-- <mat-error *ngIf="form.controls['NewPasswordRepeated'].hasError('required')">
+                  Please enter a new password
+                </mat-error> -->
+                <mat-error *ngIf="form.controls['NewPasswordRepeated'].hasError('controlSpecificError')">
+                  {{ form.controls['NewPasswordRepeated'].getError('controlSpecificError') }}
+              </mat-error>
+              </mat-form-field>
+
+              <div class="terms-checkbox">
+                <mat-checkbox formControlName="IAgreeToTerms">
+                  <label>
+                    I Agree to <a routerLink="/terms" target="_blank">Terms</a>
+                  </label>
+                </mat-checkbox>
+                <mat-error *ngIf="form.controls['IAgreeToTerms'].hasError('controlSpecificError')">
+                  {{ form.controls['IAgreeToTerms'].getError('controlSpecificError') }}
+                </mat-error>
+              </div>     
+          </mat-card-content>
+
+          <mat-card-actions class="login-actions">
+              <mat-error *ngIf="generalErrorMessage">
+                {{generalErrorMessage}}
+              </mat-error>
+              <button id="submit" mat-raised-button color="primary" [disabled]="form.invalid || loading || disableSubmit" (click)="submitForm()">OK</button>
+              <button id="cancel" mat-button (click)="cancel()" class="right-aligned">Back to Login</button>
+          </mat-card-actions>
+
+      </mat-card>
+
+      <mat-card *ngIf="this.requestSucceeded">
+        <mat-card-title style="font-size: large;" (click)="goToHomePage();">{{getInstanceName()}}</mat-card-title>
+        <mat-card-subtitle>Register new account</mat-card-subtitle>
+        <mat-card-content> 
+          <div style="text-align: center;">  
+            Please check your email for confirmation link.
+          </div>   
+          <mat-card-actions class="login-actions">            
+            <button id="cancel" mat-button (click)="cancel()" class="right-aligned">OK</button>
+          </mat-card-actions>  
+          <br/>         
+        </mat-card-content>
+         
+    </mat-card>
+
+      <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  </form>
+</div>

@@ -1,0 +1,371 @@
+﻿using System.Text.RegularExpressions;
+
+namespace CraftSynth.BuildingBlocks.UI.Web;
+
+public class UriHandler
+{
+	//Pattern library and tools:
+	// http://regexlib.com/Default.aspx
+
+	//        foo://example.com:8042/over/there?name=ferret#nose
+	//              \__host___/\port|    
+	//        \_/   \______________/\_________/\__________/ \__/
+	//         |           |             |           |        |
+	//      scheme     authority       path        query   fragment
+	//        s0          a0            p0          q0        f0
+	public const string Pattern_Uri = @"^(?<s1>(?<s0>[^:/\?#]+):)?(?<a1>"
+											+ @"//(?<a0>[^/\?#]*))?(?<p0>[^\?#]*)"
+											+ @"(?<q1>\?(?<q0>[^#]*))?"
+											+ @"(?<f1>#(?<f0>.*))?";
+
+	/// <summary>
+	/// Checks wether passed string is valid full url.
+	/// </summary>
+	/// <param name="strToCheck">Uri to check where protocol part must be included. Examples:
+	/// '<example>http://www.mywebsite.com:8080/mywebapp/mydir/mypage.htm?mykey1=myvalue1&mykey2=myvalue2#myanchor</example>'
+	/// '<example>http://www.mywebsite.com</example>'
+	/// </param>
+	/// <returns></returns>
+	public static bool IsUri(string strToCheck)
+	{
+		var objAplhaPattern = new Regex(Pattern_Uri);
+		return objAplhaPattern.IsMatch(strToCheck);
+	}
+
+	/// <summary>
+	/// Gets protocol part. Example: http, https
+	/// </summary>
+	/// <param name="uri">Uri from which part should be extracted where protocol part must be included. Examples:
+	/// '<example>http://www.mywebsite.com:8080/mywebapp/mydir/mypage.htm?mykey1=myvalue1&mykey2=myvalue2#myanchor</example>'
+	/// '<example>http://www.mywebsite.com</example>'
+	/// </param>
+	/// <returns>Requested part. Example: http, https.<value>null</value> if uri is invalid or part was not found.</returns>
+	public static string GetProtocol(string uri)
+	{
+		string protocol = null;
+		var regex = new Regex(Pattern_Uri);
+		Match match = regex.Match(uri);
+		if(match.Success)
+		{
+			protocol = match.Groups["s0"].Value;
+		}
+		return protocol;
+	}
+
+	/// <summary>
+	/// Gets authority part. Example: www.mywebsite.com:8080
+	/// </summary>
+	/// <param name="uri">Uri from which part should be extracted where protocol part must be included. Examples:
+	/// 'http://www.mywebsite.com:8080/mywebapp/mydir/mypage.htm?mykey1=myvalue1(and sign)mykey2=myvalue2#myanchor'
+	/// 'https://www.mywebsite.com'
+	/// </param>
+	/// <returns>Requested part. Example: www.mywebsite.com:8080. <value>null</value> if uri is invalid or part was not found.</returns>
+	public static string GetAuthority(string uri, bool removeSubdomain)
+	{
+		string authority = null;
+		var regex = new Regex(Pattern_Uri);
+		Match match = regex.Match(uri);
+		if(match.Success)
+		{
+			authority = match.Groups["a0"].Value;
+		}
+
+		if(removeSubdomain)
+		{
+			authority = RemoveSubdomain(authority, authority);
+		}
+
+		return authority;
+	}
+
+	public static string RemoveSubdomain(string authority, string resultIfAuthorityIsNullOrEmptyOrSubdomainNotFound)
+	{
+		if(authority != null && authority.Length > 0 && authority.IndexOf('.') > -1)
+		{
+			string[] parts = authority.Split('.');
+			authority = parts[parts.Length - 2] + "." + parts[parts.Length - 1];
+		}
+
+		return authority;
+	}
+
+	/// <summary>
+	/// Gets host part. Examples: '192.168.0.1', 'www.mywebsite.com'
+	/// </summary>
+	/// <param name="uri">
+	/// Uri from which part should be extracted where protocol part must be included. Examples: 
+	/// 'http://192.168.0.1:8080/mywebapp/mydir/mypage.htm?mykey1=myvalue1(and sign)mykey2=myvalue2#myanchor',
+	/// 'https://www.mywebsite.com'.
+	/// </param>
+	/// <returns>Requested part. Examples: '192.168.0.1', 'www.mywebsite.com'. <value>null</value> if uri is invalid or part was not found.</returns>
+	public static string GetHost(string uri)
+	{
+		string host = null;
+		var regex = new Regex(Pattern_Uri);
+		Match match = regex.Match(uri);
+		if(match.Success)
+		{
+			string authority = match.Groups["a0"].Value;
+			if(!string.IsNullOrEmpty(authority))
+			{
+				string[] parts = authority.Split(':');
+				if(parts.Length > 0)
+				{
+					host = parts[0];
+				}
+			}
+		}
+		return host;
+	}
+
+	/// <summary>
+	/// Gets port part. Example: '8080'
+	/// </summary>
+	/// <param name="uri">
+	/// Uri from which part should be extracted where protocol part must be included. Examples: 
+	/// 'http://192.168.0.1:8080/mywebapp/mydir/mypage.htm?mykey1=myvalue1(and sign)mykey2=myvalue2#myanchor',
+	/// 'https://www.mywebsite.com'.
+	/// </param>
+	/// <returns>Requested part. Example: '8080'. <value>null</value> if uri is invalid or part was not found.</returns>
+	public static string GetPort(string uri)
+	{
+		string port = null;
+		var regex = new Regex(Pattern_Uri);
+		Match match = regex.Match(uri);
+		if(match.Success)
+		{
+			string authority = match.Groups["a0"].Value;
+			if(!string.IsNullOrEmpty(authority))
+			{
+				string[] parts = authority.Split(':');
+				if(parts.Length > 1)
+				{
+					port = parts[1];
+				}
+			}
+		}
+		return port;
+	}
+
+	/// <summary>
+	/// Gets path part. Example: 'mywebapp/mydir/mypage.htm'
+	/// </summary>
+	/// <param name="uri">
+	/// Uri from which path should be extracted where protocol part must be included. Examples: 
+	/// 'http://192.168.0.1:8080/mywebapp/mydir/mypage.htm?mykey1=myvalue1(and sign)mykey2=myvalue2#myanchor',
+	/// 'https://www.mywebsite.com'.
+	/// </param>
+	/// <returns>Requested part. Example: 'mywebapp/mydir/mypage.htm'. <value>null</value> if uri is invalid or part was not found.</returns>
+	public static string GetPath(string uri)
+	{
+		string path = null;
+		var regex = new Regex(Pattern_Uri);
+		Match match = regex.Match(uri);
+		if(match.Success)
+		{
+			path = match.Groups["p0"].Value;
+		}
+		return path;
+	}
+
+	/// <summary>
+	/// Gets key/value pairs list.
+	/// </summary>
+	/// <param name="uri">
+	/// Uri from which pairs should be extracted where protocol part must be included. Examples: 
+	/// 'http://192.168.0.1:8080/mywebapp/mydir/mypage.htm?mykey1=myvalue1(and sign)mykey2=myvalue2#myanchor',
+	/// 'https://www.mywebsite.com'.
+	/// </param>
+	/// <returns>Requested part. Example: '{(mykey1,myvalue1),(mykey2,myvalue2)}'. <value>null</value> if uri is invalid or part was not found.</returns>
+	public static Dictionary<string, string> GetKeyValuePairs(string uri)
+	{
+		Dictionary<string, string> pairs = null;
+		var regex = new Regex(Pattern_Uri);
+		Match match = regex.Match(uri);
+		if(match.Success)
+		{
+			string query = match.Groups["q0"].Value;
+			string[] keyValuePairsArray = query.Split('&');
+
+			pairs = new Dictionary<string, string>();
+			foreach(string keyValuePairString in keyValuePairsArray)
+			{
+				//This should be tested before use:
+				//Regex.Match(keyValuePairString, @"^(?<key>[^?=]+)=(?<value>[^=#]*)&").Groups["key"].Value
+				//Regex.Match(keyValuePairString, @"^(?<key>[^?=]+)=(?<value>[^=#]*)&").Groups["value"].Value
+				pairs.Add(keyValuePairString.Split('=')[0], keyValuePairString.Split('=')[1]);
+			}
+		}
+		return pairs;
+	}
+
+	/// <summary>
+	/// Gets fragment part. Example: 'myanchor'
+	/// </summary>
+	/// <param name="uri">
+	/// Uri from which fragment should be extracted where protocol part must be included. Examples: 
+	/// 'http://192.168.0.1:8080/mywebapp/mydir/mypage.htm?mykey1=myvalue1(and sign)mykey2=myvalue2#myanchor',
+	/// 'https://www.mywebsite.com'.
+	/// </param>
+	/// <returns>Requested part. Example: 'myanchor'. <value>null</value> if uri is invalid or part was not found.</returns>
+	public static string GetFragment(string uri)
+	{
+		string fragment = null;
+		var regex = new Regex(Pattern_Uri);
+		Match match = regex.Match(uri);
+		if(match.Success)
+		{
+			fragment = match.Groups["f0"].Value;
+		}
+		return fragment;
+	}
+
+	/// <summary>
+	/// Gets for example http://www.google.com:8080/MyApplication
+	/// </summary>
+	/// <returns></returns>
+	public static string GetAbsoluteWebsiteRoot()
+	{
+		throw new NotImplementedException(); //TODO: port to DotNet6
+											 //return GetAbsoluteWebsiteRoot(HttpContext.Current);
+	}
+
+	public static string UriCombine(params string[] parts)
+	{
+		string r = null;
+
+		if(parts == null)
+		{
+			r = null;
+		}
+		else if(parts.Length == 0)
+		{
+			r = null;
+		}
+		else
+		{
+			r = "";
+			for(int i = 0; i < parts.Length; i++)
+			{
+				{
+					if(i == 0)
+					{
+						r = r + parts[i].TrimEnd().TrimEnd('\\').TrimEnd('/').TrimEnd().TrimEnd('\\').TrimEnd('/').TrimEnd().TrimEnd('\\').TrimEnd('/').TrimEnd().TrimEnd('\\').TrimEnd('/');
+					}
+					else if(i == parts.Length - 1)
+					{
+						r = r + '/' + parts[i].TrimStart().TrimStart('\\').TrimStart('/').TrimStart().TrimStart('\\').TrimStart('/').TrimStart().TrimStart('\\').TrimStart('/').TrimStart().TrimStart('\\').TrimStart('/');
+					}
+					else
+					{
+						r = r + '/' + parts[i].Trim().Trim('\\').Trim('/').Trim().Trim('\\').Trim('/').Trim().Trim('\\').Trim('/').Trim().Trim('\\').Trim('/');
+					}
+				}
+			}
+		}
+
+		return r;
+	}
+
+	//TODO: port to DotNet6
+	//public static string GetAbsoluteWebsiteRoot(HttpContext httpContext)
+	//      {
+	//          string r = null;
+
+	//          if (httpContext.Request.ApplicationPath.Length <= 1)
+	//          {//not path so value is '/'
+	//              r = ReplaceLastOccurrenceIfFound(httpContext.Request.Url.AbsoluteUri, httpContext.Request.Url.PathAndQuery, string.Empty);
+	//          }
+	//          else
+	//          {//path exists
+	//              if (httpContext.Request.Url.PathAndQuery == httpContext.Request.ApplicationPath)
+	//              {
+	//                  r = ReplaceLastOccurrenceIfFound(httpContext.Request.Url.AbsoluteUri, httpContext.Request.Url.PathAndQuery, string.Empty);
+	//              }
+	//              else
+	//              {
+	//                  r = ReplaceLastOccurrenceIfFound(httpContext.Request.Url.AbsoluteUri,
+	//                          ReplaceLastOccurrenceIfFound(httpContext.Request.Url.PathAndQuery, httpContext.Request.ApplicationPath, string.Empty),
+	//                          string.Empty);
+	//              }
+	//          }
+
+	//          #region for debugging
+	//          //try
+	//          //{
+	//          //    string t = "";
+	//          //    if (System.IO.File.Exists("d:\\GetAbsoluteWebsiteRoot.txt"))
+	//          //    {
+	//          //        t = System.IO.File.ReadAllText("d:\\GetAbsoluteWebsiteRoot.txt") ?? "";
+	//          //    }
+	//          //    System.IO.File.WriteAllText("d:\\GetAbsoluteWebsiteRoot.txt", t + "\r\n" + DateTime.Now.ToString() + ": httpContext.Request.Url.AbsoluteUri=" + (httpContext.Request.Url.AbsoluteUri ?? "null") + ",httpContext.Request.Url.PathAndQuery=" + (httpContext.Request.Url.PathAndQuery ?? "null") + ", Result=" + r);
+	//          //}
+	//          //catch { }
+	//          #endregion
+
+	//          return r;
+	//      }
+
+	private static string ReplaceLastOccurrenceIfFound(string s, string whatToReplace, string replaceWith)
+	{
+		int foundAt = s.LastIndexOf(whatToReplace);
+		if(foundAt >= 0)
+		{
+			s = s.Remove(foundAt, whatToReplace.Length).Insert(foundAt, replaceWith);
+		}
+		return s;
+	}
+}
+
+//Other regular expression pattern examples:
+//     Match only alphanumeric characters along with the characters -, +, ., and any whitespace, with the stipulation that there is at least one of these characters and no more than 10 of these characters:
+
+//    ^([\w\.+-]|\s){1,10}$
+
+// Match a date in the form ##/##/#### where the day and month can be a one- or two-digit value, and year can either be a two- or four-digit value:
+
+//    ^\d{1,2}\/\d{1,2}\/\d{2,4}$
+
+// Match a time to be entered with an optional am or pm extension (note that this regular expression also handles military time):
+
+//    ^\d{1,2}:\d{2}\s?([ap]m)?$
+
+// Match an IP address:
+
+//    ^([0-2]?[0-5]?[0-5]\.){3}[0-2]?[0-5]?[0-5]$
+
+// Verify that an email address is in the form name@address where address is not an IP address:
+
+//    ^[A-Za-z0-9_\-\.]+@(([A-Za-z0-9\-])+\.)+([A-Za-z\-])+$
+
+// Verify that an email address is in the form name@address where address is an IP address:
+
+//    ^[A-Za-z0-9_\-\.]+@([0-2]?[0-5]?[0-5]\.){3}[0-2]?[0-5]?[0-5]$
+
+// Match only a dollar amount with the optional $ and + or - preceding characters (note that any number of decimal places may be added):
+
+//    ^\$?[+-]?[\d,]*(\.\d*)?$
+
+//This is similar to the previous regular expression except that only up to two decimal places are allowed:
+
+//    ^\$?[+-]?[\d,]*\.?\d{0,2}$
+
+// Match a credit card number to be entered as four sets of four digits separated with a space, -, or no character at all:
+
+//    ^((\d{4}[- ]?){3}\d{4})$
+
+// Match a zip code to be entered either as five digits with an optional four-digit extension:
+
+//    ^\d{5}(-\d{4})?$
+
+// Match a North American phone number with an optional area code and an optional - character to be used in the phone number and no extension:
+
+//    ^(\(?[0-9]{3}\)?)?\-?[0-9]{3}\-?[0-9]{4}$
+
+// Match a phone number similar to the previous regular expression, but allow an optional five-digit extension prefixed with either ext or extension:
+
+//    ^(\(?[0-9]{3}\)?)?\-?[0-9]{3}\-?[0-9]{4}(\s*ext(ension)?[0-9]{5})?$
+
+// Match a full path beginning with the drive letter and optionally match a filename with a three-character extension (note that no .. characters signifying to move up the directory hierarchy are allowed, nor is a directory name with a . followed by an extension):
+
+//    ^[a-zA-Z]:[\\/]([_a-zA-Z0-9]+[\\/]?)*([_a-zA-Z0-9]+\.[_a-zA-Z0-9]{0,3})?$

@@ -1,0 +1,4 @@
+::ng-deep .right-aligned{
+    text-align: right;
+    float: right;
+} 

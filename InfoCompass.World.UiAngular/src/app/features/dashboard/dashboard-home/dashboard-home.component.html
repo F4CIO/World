@@ -1,0 +1,26 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+
+  <div fxFlex="95%">
+    <div class="container auto-sized-font2" fxLayout="row" fxLayoutAlign="center none">
+      
+      <h2 *ngIf="!this.currentVisitor && !this.currentlyLoggedInUser">Welcome, visitor!</h2>
+      <h2 *ngIf="this.currentVisitor && !this.currentlyLoggedInUser">Welcome, visitor!</h2>
+      <h2 *ngIf="this.currentlyLoggedInUser">Welcome back, {{this.getUserFirstNameAndLastNameOrEMail()}}!</h2>
+
+    </div>
+
+    <div class="container" fxLayout="row" fxLayoutAlign="center none">
+      <div fxFlex="50%" class="text-center no-records animate" style="margin-left: 30px;">
+        <mat-icon>dashboard</mat-icon>
+        <span *ngIf="!this.currentlyLoggedInUser">
+          <p>Check your <a routerLink="/library">library</a>.</p>
+          <p><a routerLink="/auth/login">Register/Login</a> to unlock more all features.</p>
+        </span>
+        <span *ngIf="this.currentlyLoggedInUser">         
+          <p>Check your <a routerLink="/library">library</a>.</p>
+        </span>
+      </div>
+      <mat-icon> </mat-icon>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+table {
+    width: 100%;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+  ::ng-deep .auto-sized-font2 {
+    font-size: medium !important;
+  }
+  
+  @media (max-width: 450px) {
+    ::ng-deep .auto-sized-font2 {
+      font-size: small !important; 
+    }
+  }
+  
+  @media (max-width: 300px) {
+    ::ng-deep .auto-sized-font2 {
+      font-size: smaller !important; 
+    }
+  }
+  
+  @media (max-width: 260px) {
+    ::ng-deep .auto-sized-font2 {
+      font-size: x-small !important; 
+    }
+  }
+  
+  @media (max-width: 220px) {
+    ::ng-deep .auto-sized-font2 {
+      font-size: xx-small !important; 
+    }
+  }
+
+  @media (max-width: 576px) {
+    ::ng-deep
+    .container,
+    .mat-card,
+    .mat-table,
+    .mat-header-row ,
+    .mat-row,
+    .mat-header-cell,
+    .mat-cell,
+    .mat-table td.mat-cell:first-child, .mat-table td.mat-footer-cell:first-child, .mat-table th.mat-header-cell:first-child {
+      padding-left: 1px !important;
+      padding-right: 1px !important;
+      margin-left: 1px !important;
+      margin-right: 1px !important;
+    }
+  
+    /* Add any other elements that need their padding/margin adjusted */
+  }
+  

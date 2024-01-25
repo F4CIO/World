@@ -1,0 +1,429 @@
+﻿using InfoCompass.BuildingBlocks.Common;
+using InfoCompass.World.Common.Entities;
+using InfoCompass.BuildingBlocks.Logging;
+using InfoCompass.BuildingBlocks.IO;
+using Microsoft.Extensions.Options;
+using Settings = InfoCompass.World.Common.Entities.Settings;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using DocumentFormat.OpenXml.Office2013.Word;
+using iTextSharp.text.pdf.draw;
+
+namespace InfoCompass.World.BusinessLogic
+{
+	public interface IServiceForITextSharp
+	{
+		Task ExportToPdf(Book book, BookSettings bookSettings, string filePath, CustomTraceLog log);
+	}
+
+	/// <summary>
+	/// https://github.com/VahidN/iTextSharp.LGPLv2.Core
+	/// </summary>
+	internal class ServiceForITextSharp : IServiceForITextSharp
+	{
+		private Settings _settings;
+		private CustomTraceLog _globalLog;
+		private CustomTraceLog log;
+		private BookSettings _bookSettings;
+		private Book _book;
+		private Font _FontForMainTitle;
+		private Font _FontForTitle;
+		private Font _FontForBody;
+		private Font _FontForTableOfContentsTitle;
+		private Font _FontForTableOfContentsBody;
+		private PageNumberFooter _pageNumberFooter;
+
+		public ServiceForITextSharp(IOptions<Settings> settings, CustomTraceLog globalLog)
+		{
+			this._settings = settings.Value;
+			this._globalLog = globalLog;
+		}
+
+		public async Task ExportToPdf(Book book, BookSettings bookSettings, string filePath, CustomTraceLog log)
+		{
+			this.log = log;
+			this._bookSettings = bookSettings;
+			int tableOfContentHeightInPages = 1;//one is our presumption
+			int tableOfContentsDesiredStartPage = 0;
+			string tmpFilePath = System.IO.Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath)+".tmp"+Path.GetExtension(filePath));
+
+			using (log.LogScope($"Exporting to {filePath} ..."))
+			{
+				Dictionary<string, BaseFont> baseFontDict = new Dictionary<string, BaseFont>();
+				baseFontDict.AddIfNotExist(bookSettings.FontFileNameForMainTitle, CreateEmbededBaseFont(this._settings.FontsFolderPath, bookSettings.FontFileNameForMainTitle), true);
+				baseFontDict.AddIfNotExist(bookSettings.FontFileNameForTitle, CreateEmbededBaseFont(this._settings.FontsFolderPath, bookSettings.FontFileNameForTitle), true);
+				baseFontDict.AddIfNotExist(bookSettings.FontFileNameForBody, CreateEmbededBaseFont(this._settings.FontsFolderPath, bookSettings.FontFileNameForBody), true);
+				baseFontDict.AddIfNotExist(bookSettings.FontFileNameForTableOfContentsTitle, CreateEmbededBaseFont(this._settings.FontsFolderPath, bookSettings.FontFileNameForTableOfContentsTitle), true);
+				baseFontDict.AddIfNotExist(bookSettings.FontFileNameForTableOfContentsBody, CreateEmbededBaseFont(this._settings.FontsFolderPath, bookSettings.FontFileNameForTableOfContentsBody), true);
+				this._FontForMainTitle = new Font(baseFontDict[bookSettings.FontFileNameForMainTitle], 20, Font.NORMAL);
+				this._FontForTitle = new Font(baseFontDict[bookSettings.FontFileNameForTitle], 16, Font.NORMAL);
+				this._FontForBody = new Font(baseFontDict[bookSettings.FontFileNameForBody], 12, Font.NORMAL);
+				this._FontForTableOfContentsTitle = new Font(baseFontDict[bookSettings.FontFileNameForTableOfContentsTitle], 12, Font.NORMAL);
+				this._FontForTableOfContentsBody = new Font(baseFontDict[bookSettings.FontFileNameForTableOfContentsBody], 12, Font.NORMAL);
+
+				iTextSharp.text.Document doc = null;
+				PdfWriter writer = null;
+				FileStream fileStream = null;
+				try
+				{
+					log.AddLine("Creating document...");
+					doc = new iTextSharp.text.Document(PageSize.A4);
+					fileStream = new FileStream(filePath, FileMode.Create);
+					writer = PdfWriter.GetInstance(doc, fileStream);
+
+					this._pageNumberFooter = new PageNumberFooter(this._settings, this._globalLog, book, bookSettings, log);
+					this._pageNumberFooter.PageNumberCurrentlyVisible = false;
+					writer.PageEvent = this._pageNumberFooter;
+					doc.Open();
+
+					log.AddLine("Adding start pages...", false);
+					this.AddBlankPages(doc, this._bookSettings.EndpapersCountAtStart);
+					this.AddPageBreak(doc);
+					this.AddMainTitle(doc, book.Title);
+					this.AddParagraph(doc, $"-{book.Author}-", Element.ALIGN_CENTER);
+					this.AddParagraph(doc, $"{book.Edition}", Element.ALIGN_CENTER);
+					this.AddVerticalSpace(doc, 220);
+					this.AddParagraph(doc, $"{book.Copyright}");
+					this.AddParagraph(doc, $"{book.ISBN}", Element.ALIGN_CENTER);
+					this.AddParagraph(doc, $"{book.PublicationDate}", Element.ALIGN_CENTER);
+					this.AddPageBreak(doc);
+					this._pageNumberFooter.PageNumberCurrentlyVisible = true;
+					var tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.LegalNoticesTitle);
+					this.AddSection(writer, doc, null, tocItem, book.LegalNoticesTitle, book.LegalNotices);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.DedicationTitle);
+					this.AddSection(writer, doc, null, tocItem, book.DedicationTitle, book.Dedication);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.AcknowledgmentsTitle);
+					this.AddSection(writer, doc, null, tocItem, book.AcknowledgmentsTitle, book.Acknowledgments);
+
+					tableOfContentsDesiredStartPage = writer.PageNumber;
+					this.AddBlankPages(doc, tableOfContentHeightInPages);//toc will be inserted here. leave blank pages for it.			
+
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.IntroductionTitle);
+					this.AddSection(writer, doc, null, tocItem, book.IntroductionTitle, book.Introduction);
+					this.AddPageBreak(doc);
+
+					log.AddLine("Adding chapters...", false);
+					if (book.Chapters != null && book.Chapters.Count > 0)
+					{
+						foreach (var chapter in book.Chapters)
+						{
+							log.AddLine($"Adding chapter {chapter.Order}. {chapter.Title} ...", false);
+							tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == chapter.Title);
+							this.AddSection(writer, doc, chapter, tocItem, chapter.Title, chapter.Body);
+							this.AddPageBreak(doc);
+						}
+					}
+					this.AddPageBreak(doc);
+					log.AddLine("Adding end pages...", false);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.ConclusionTitle);
+					this.AddSection(writer, doc, null, tocItem, book.ConclusionTitle, book.Conclusion);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.AppendicesTitle);
+					this.AddSection(writer, doc, null, tocItem, book.AppendicesTitle, book.Appendices);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.EndnotesTitle);
+					this.AddSection(writer, doc, null, tocItem, book.EndnotesTitle, book.Endnotes);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.BibliographyTitle);
+					this.AddSection(writer, doc, null, tocItem, book.BibliographyTitle, book.Bibliography);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.IndexTitle);
+					this.AddSection(writer, doc, null, tocItem, book.IndexTitle, book.Index);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.GlossaryTitle);
+					this.AddSection(writer, doc, null, tocItem, book.GlossaryTitle, book.Glossary);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.AuthorBioTitle);
+					this.AddSection(writer, doc, null, tocItem, book.AuthorBioTitle, book.AuthorBio);
+					this.AddPageBreak(doc);
+					tocItem = book.TableOfContents.Items.SingleOrDefault(item => item.Title == book.AboutPublisherTitle);
+					this.AddSection(writer, doc, null, tocItem, book.AboutPublisherTitle, book.AboutPublisher);
+					this.AddPageBreak(doc);
+
+					this._pageNumberFooter.PageNumberCurrentlyVisible = false;
+					this.AddBlankPages(doc, this._bookSettings.EndpapersCountAtEnd);
+
+					log.AddLine("Adding table of contents...", false);
+					this.AddPageBreak(doc);
+
+					int tableOfContentsStartPage = writer.PageNumber;
+					book.TableOfContents.Items = book.TableOfContents.Items.Where(item => item.Title.IsPrintable() && item.PageNumber >= 0).ToList();
+					this.AddTableOfContents(writer, doc, book.TableOfContents);
+					tableOfContentHeightInPages = writer.PageNumber - tableOfContentsStartPage;
+
+					log.AddLine("Saving file...", false);
+				}
+				finally
+				{
+					try
+					{
+						doc?.Close();
+					}
+					catch { }
+					try
+					{
+						writer?.Close();
+					}
+					catch { }
+					try
+					{
+						fileStream?.Close();
+					}
+					catch { }
+				}
+			}
+
+			using (FileStream fs = new FileStream(tmpFilePath, FileMode.Create))
+			{
+				Document doc = new Document(PageSize.A4);
+				PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+				doc.Open();
+
+				this.AddTableOfContents(writer, doc, book.TableOfContents);
+
+				doc.NewPage();
+
+				// Add the original content after the TOC
+				PdfReader reader = null;
+				int attemptsLeft = 5;
+				do
+				{
+					try
+					{
+						reader = new PdfReader(filePath);
+					}
+					catch (Exception e)
+					{
+						reader = null;
+						if (e.Message.Contains("because it is being used by another process"))
+						{
+							if (attemptsLeft > 0)
+							{
+								log.AddLine($"Waiting 1s on file to be released. File: {filePath} ...");
+								attemptsLeft--;
+								System.Threading.Thread.Sleep(1000);
+							}
+							else
+							{
+								throw;
+							}
+						}
+						else
+						{
+							throw;
+						}
+					}
+				} while (reader == null);
+
+				PdfContentByte cb = writer.DirectContent;
+				for (int i = 1; i <= reader.NumberOfPages; i++)
+				{
+					doc.SetPageSize(reader.GetPageSizeWithRotation(i));
+					doc.NewPage();
+					PdfImportedPage page = writer.GetImportedPage(reader, i);
+					cb.AddTemplate(page, 0, 0);
+				}
+
+				reader.Close();
+				doc.Close();
+			}
+		}
+
+		private void AddBlankPages(Document doc, int? endpapersCountAtStart)
+		{
+			for (int i = 0; i < endpapersCountAtStart.Value; i++)
+			{
+				this.AddPageBreak(doc);
+				this.AddParagraph(doc, " ");
+			}
+		}
+		
+		private void AddVerticalSpace(Document doc, float v)
+		{
+			var p = new iTextSharp.text.Paragraph(" ", this._FontForMainTitle);
+			p.Alignment = (int)Element.ALIGN_CENTER;
+			p.SpacingAfter = v;
+			doc.Add(p);
+		}
+
+		private void AddMainTitle(Document doc, string mainTitle)
+		{
+			if (mainTitle.IsNOTNullOrWhiteSpace())
+			{			
+				this.AddVerticalSpace(doc, 150);
+
+				var p = new iTextSharp.text.Paragraph(mainTitle, this._FontForMainTitle);
+				p.Alignment = (int)Element.ALIGN_CENTER;
+				doc.Add(p);
+			}
+		}		
+
+		private void AddSection(PdfWriter writer, Document doc, BookChapter chapter, TableOfContentsItem tocItem, string sectionTitle, string sectionBody, bool skipEmptyParagraphs = true)
+		{
+			//if (sectionBody.IsPrintable())
+			//{
+			//	this.AddPageBreak(doc);
+			//}
+
+			if (sectionBody.IsPrintable() && sectionTitle.IsPrintable())
+			{
+				if(this._bookSettings.CapitalizeTitles.Value){
+					sectionTitle = sectionTitle.ToUpper();
+				}
+
+				if (chapter != null)
+				{
+					chapter.PageNumber = writer.PageNumber;
+				}				
+				if(tocItem!=null){
+					tocItem.PageNumber = writer.PageNumber;
+				}
+
+				var p = new iTextSharp.text.Paragraph(sectionTitle, this._FontForTitle);
+				p.Alignment = (int)Element.ALIGN_CENTER;
+				doc.Add(p);
+			}
+			
+			if (sectionBody.IsPrintable())
+			{
+				List<string> paragraphs = sectionBody.Split("\n").ToList();
+				// Add section body with multiple paragraphs
+				foreach (string paragraphText in paragraphs)
+				{
+					if (skipEmptyParagraphs && paragraphText.IsNullOrNonPrintable())
+					{
+						//skip
+					}
+					else
+					{
+						this.AddParagraph(doc, paragraphText.TrimNonPrintableChars());
+					}
+				}
+			}
+		}
+
+		private void AddPageBreak(Document doc)
+		{
+			doc.NewPage();
+		}
+		
+		private void AddParagraph(iTextSharp.text.Document doc, string paragraphText, int justification = Element.ALIGN_JUSTIFIED)
+		{
+			var p = new Paragraph(paragraphText, this._FontForBody);
+			p.Alignment = justification;
+			doc.Add(p);
+		}
+
+		/// <summary>
+		/// </summary>
+		/// <param name="body"></param>
+		private void AddTableOfContents(PdfWriter writer, Document doc, TableOfContents tableOfContents)
+		{
+			// Create a reference point for the TOC
+			//var tocAnchor = new PdfDestination(PdfDestination.FITH, doc.Bottom);
+
+			// Add the TOC anchor
+			//toc.Add(new Chunk(new PdfAction(tocAnchor), "Go to Table of Contents"));
+			//toc.Add(new Chunk(new PdfAction(PdfAction.GotoLocalPage(1, tocAnchor, writer)), "Go to Table of Contents"));
+
+			string title = this._bookSettings.TableofContentsTitle;
+			if(this._bookSettings.CapitalizeTitles.Value){
+				title = title.ToUpper();
+			}
+			var tocTitle = new Paragraph(title, this._FontForTableOfContentsTitle);
+			tocTitle.Alignment = Element.ALIGN_CENTER;
+			tocTitle.SpacingAfter = 12f;
+			doc.Add(tocTitle);
+
+			foreach (var item in tableOfContents.Items)
+			{				
+				PdfAction action = PdfAction.GotoLocalPage(item.PageNumber, new PdfDestination(PdfDestination.FIT), writer);
+				Paragraph p = new Paragraph();
+
+				var titleChunk = new Chunk(item.Title, this._FontForTableOfContentsBody);
+				titleChunk.SetAction(action);
+				p.Add(titleChunk);	
+				
+				Chunk dottedLineChunk = new Chunk(new DottedLineSeparator());
+				dottedLineChunk.SetAction(action);
+				p.Add(dottedLineChunk);
+
+				var pageNumberChunk = new Chunk(item.PageNumber.ToString(), this._FontForTableOfContentsBody);
+				pageNumberChunk.SetAction(action);
+				p.Add(pageNumberChunk);
+
+				doc.Add(p);
+			}
+		}
+
+		private static BaseFont CreateEmbededBaseFont(string fontsFolder, string ttfFileName)
+		{
+			//this uses registered built-in default fonts and does not guarantee embeded nor non-us chars:
+			//Font f = FontFactory.GetFont(FontFactory.TIMES, 18f);
+
+			string fontsFolderPath = InfoCompass.BuildingBlocks.IO.FileSystem.GetAbsolutePath(fontsFolder);
+			string fontFilePath = InfoCompass.BuildingBlocks.IO.FileSystem.PathCombine(fontsFolderPath, ttfFileName);
+			BaseFont baseFont = BaseFont.CreateFont(fontFilePath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			return baseFont;
+		}
+
+		public class PageNumberFooter : PdfPageEventHelper
+		{
+			Settings _settings;
+			CustomTraceLog _globalLog;
+			Book _book;
+			BookSettings _bookSettings;
+			CustomTraceLog _log;
+			Font _font;
+			public bool PageNumberCurrentlyVisible = false;
+
+			public PageNumberFooter(Settings settings, CustomTraceLog globalLog, Book book, BookSettings bookSettings, CustomTraceLog log)
+			{
+				this._settings = settings;
+				this._globalLog = globalLog;
+				this._book = book;
+				this._bookSettings = bookSettings;
+				this._log = log;
+			}
+
+			public override void OnEndPage(PdfWriter writer, Document document)
+			{
+				base.OnEndPage(writer, document);
+
+				if (this._font == null)
+				{
+					Dictionary<string, BaseFont> baseFontDict = new Dictionary<string, BaseFont>();
+					baseFontDict.AddIfNotExist(this._bookSettings.FontFileNameForFooter, ServiceForITextSharp.CreateEmbededBaseFont(this._settings.FontsFolderPath, this._bookSettings.FontFileNameForFooter), true);
+					this._font = new Font(baseFontDict[this._bookSettings.FontFileNameForFooter], 10, Font.NORMAL);
+				}
+
+				if (this.PageNumberCurrentlyVisible)
+				{
+					Phrase footer = new Phrase(writer.PageNumber.ToString(), this._font);
+
+					// Add the phrase to the PDF, positioning it at the right corner of the footer
+					ColumnText.ShowTextAligned(
+						writer.DirectContent,
+						Element.ALIGN_RIGHT,
+						footer,
+						document.RightMargin + document.Right - 20,  // Positioning it at the right edge minus a small offset
+						document.Bottom - 10,  // 10 units above the bottom edge of the page
+						0
+					);
+				}
+			}
+		}
+	}	
+
+	internal class MockedServiceForITextSharp : IServiceForITextSharp
+	{
+		public Task ExportToPdf(Book book, BookSettings bookSettings, string filePath, CustomTraceLog log)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	
+}
