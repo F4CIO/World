@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/InfoCompass.World/FileContentIndex
+/CraftSynth.BuildingBlocks.Generated/obj/Debug/net6.0
+/CraftSynth.BuildingBlocks.Generated/obj
+/InfoCompass.World.BusinessLogic/obj/Debug/net6.0
+/InfoCompass.World.BusinessLogic/obj
+/InfoCompass.World.Common/obj/Debug/net6.0
+/InfoCompass.World.Common/obj
+/InfoCompass.World.DataAccessByFileSystem/obj/Debug/net6.0
+/InfoCompass.World.DataAccessByFileSystem/obj
+/InfoCompass.World.DataAccessContracts/obj
+/InfoCompass.World.UiWebApi/obj
+/bin/Debug/net6.0
