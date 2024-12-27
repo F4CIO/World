@@ -1,6 +1,6 @@
-﻿using InfoCompass.World.DataAccessContracts;
+﻿using MyCompany.World.DataAccessContracts;
 
-namespace InfoCompass.World.DataAccessByFileSystem;
+namespace MyCompany.World.DataAccessByFileSystem;
 
 public sealed class ServiceForRegistrationConfirmations:ServiceForEntities, IServiceForRegistrationConfirmations
 {

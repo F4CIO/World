@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace InfoCompass.World.BusinessLogic;
+namespace MyCompany.World.BusinessLogic;
 
 public class ServiceForLogSink_FilePerUserPerJob:ILogEventSink, IDisposable
 {

@@ -1,10 +1,10 @@
 using System.Diagnostics;
-using InfoCompass.World.BusinessLogic;
-using InfoCompass.World.UiWebApi.Logic;
-using InfoCompass.World.UiWebApi.Middleware;
+using MyCompany.World.BusinessLogic;
+using MyCompany.World.UiWebApi.Logic;
+using MyCompany.World.UiWebApi.Middleware;
 using Serilog;
 
-namespace InfoCompass.World.UiWebApi;
+namespace MyCompany.World.UiWebApi;
 
 public class Program
 {
@@ -62,7 +62,7 @@ public class Program
 		{//test at startup that all services are resolvable:
 			IHttpContextAccessor httpContextAccessor = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>();
 			ServiceForCOE serviceForCOE = scope.ServiceProvider.GetRequiredService<ServiceForCOE>();
-			IServiceForLogs serviceForLogs = scope.ServiceProvider.GetRequiredService<InfoCompass.World.BusinessLogic.IServiceForLogs>();
+			IServiceForLogs serviceForLogs = scope.ServiceProvider.GetRequiredService<MyCompany.World.BusinessLogic.IServiceForLogs>();
 			ServiceForCOE serviceForC = scope.ServiceProvider.GetRequiredService<ServiceForCOE>();
 			IServiceForBase serviceForBase = scope.ServiceProvider.GetRequiredService<IServiceForBase>();
 			IServiceForEMails serviceForEMails = scope.ServiceProvider.GetRequiredService<IServiceForEMails>();

@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
 using System.Net;
-using InfoCompass.World.BusinessLogic;
-using Errors = InfoCompass.World.Common.Entities.Errors;
+using MyCompany.World.BusinessLogic;
+using Errors = MyCompany.World.Common.Entities.Errors;
 
-namespace InfoCompass.World.UiWebApi.Models;
+namespace MyCompany.World.UiWebApi.Models;
 
-public class ServerResponseForUI<T>:InfoCompass.World.Common.Entities.ServerResponse<T>
+public class ServerResponseForUI<T>:MyCompany.World.Common.Entities.ServerResponse<T>
 {
 	private KnownColor? _messageColor;
 	public KnownColor? MessageColor

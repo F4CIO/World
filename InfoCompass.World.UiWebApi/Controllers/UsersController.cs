@@ -1,17 +1,17 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using InfoCompass.World.BusinessLogic;
-using InfoCompass.World.Public.Api;
-using InfoCompass.World.UiWebApi.Models;
+using MyCompany.World.BusinessLogic;
+using MyCompany.World.Public.Api;
+using MyCompany.World.UiWebApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Error = InfoCompass.World.Common.Entities.Error;
+using Error = MyCompany.World.Common.Entities.Error;
 
-namespace InfoCompass.World.UiWebApi.Controllers;
+namespace MyCompany.World.UiWebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.BusinessLogic;
+﻿namespace MyCompany.World.BusinessLogic;
 
 //public interface HandlerForYouTrackIssuesInterface: GenericHandlerInterface<YouTrackSharp.Issues.Issue>
 //{

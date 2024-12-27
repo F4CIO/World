@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.DataAccessByFileSystem;
+﻿namespace MyCompany.World.DataAccessByFileSystem;
 
 public class ServiceBase
 {

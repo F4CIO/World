@@ -1,8 +1,8 @@
 ﻿using System.Net.Mail;
-using InfoCompass.World.DataAccessContracts;
-using Errors = InfoCompass.World.Common.Entities.Errors;
+using MyCompany.World.DataAccessContracts;
+using Errors = MyCompany.World.Common.Entities.Errors;
 
-namespace InfoCompass.World.BusinessLogic;
+namespace MyCompany.World.BusinessLogic;
 
 public interface IServiceForUsers
 {
@@ -21,14 +21,14 @@ public interface IServiceForUsers
 	Task<ServerResponse<string>> PostUserMessage(UserMessage userMessage);
 }
 
-public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase, IServiceForUsers
+public sealed class ServiceForUsers:MyCompany.World.BusinessLogic.ServiceBase, IServiceForUsers
 {
-	InfoCompass.World.DataAccessContracts.IServiceForPasswordResetRequests _serviceForPasswordResetRequests;
-	InfoCompass.World.BusinessLogic.IServiceForSettings _serviceForSettings;
-	InfoCompass.World.DataAccessContracts.IServiceForRegistrationConfirmations _serviceForRegistrationConfirmations;
-	InfoCompass.World.DataAccessContracts.IServiceForUserMessages _serviceForUserMessages;
+	MyCompany.World.DataAccessContracts.IServiceForPasswordResetRequests _serviceForPasswordResetRequests;
+	MyCompany.World.BusinessLogic.IServiceForSettings _serviceForSettings;
+	MyCompany.World.DataAccessContracts.IServiceForRegistrationConfirmations _serviceForRegistrationConfirmations;
+	MyCompany.World.DataAccessContracts.IServiceForUserMessages _serviceForUserMessages;
 
-	public ServiceForUsers(ServiceForCOE c, IServiceForLogs serviceForLogs, InfoCompass.World.DataAccessContracts.IServiceForUsers serviceForUsers, InfoCompass.World.DataAccessContracts.IServiceForPasswordResetRequests serviceForPasswordResetRequests, IServiceForSettings serviceForSettings, IServiceForRegistrationConfirmations serviceForRegistrationConfirmations, IServiceForUserMessages serviceForUserMessages)
+	public ServiceForUsers(ServiceForCOE c, IServiceForLogs serviceForLogs, MyCompany.World.DataAccessContracts.IServiceForUsers serviceForUsers, MyCompany.World.DataAccessContracts.IServiceForPasswordResetRequests serviceForPasswordResetRequests, IServiceForSettings serviceForSettings, IServiceForRegistrationConfirmations serviceForRegistrationConfirmations, IServiceForUserMessages serviceForUserMessages)
 		: base(c, serviceForLogs, serviceForUsers)
 	{
 		_serviceForPasswordResetRequests = serviceForPasswordResetRequests;
@@ -130,7 +130,7 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 								PendingLastName = request.LastName,
 								PendingEMail = request.EMail,
 								PendingSubscribeMe = request.SubscribeMe,
-								PendingPasswordHash = InfoCompass.World.Common.Helper.CreateHashFromPassword(request.NewPassword)
+								PendingPasswordHash = MyCompany.World.Common.Helper.CreateHashFromPassword(request.NewPassword)
 							};
 							registrationConfirmation = await _serviceForRegistrationConfirmations.Insert(registrationConfirmation);
 
@@ -400,7 +400,7 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 		}
 		else
 		{
-			string requestPasswordHash = InfoCompass.World.Common.Helper.CreateHashFromPassword(request.Password);
+			string requestPasswordHash = MyCompany.World.Common.Helper.CreateHashFromPassword(request.Password);
 			if(userFromDb.PasswordHash != requestPasswordHash)
 			{
 				r = new ServerResponse<User>(false, "Bad email or password", null, null, null, null, System.Net.HttpStatusCode.Forbidden);
@@ -477,7 +477,7 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 							MomentOfCreation = DateTime.Now,
 							MomentOfLastUpdate = DateTime.Now,
 							MomentOfExpirationAsUtc = DateTime.Now.AddDays(1),
-							Token = InfoCompass.World.Common.Helper.CreateHashFromPassword(token),
+							Token = MyCompany.World.Common.Helper.CreateHashFromPassword(token),
 							IsActive = true,
 							ReasonForDeactivation = null
 						};
@@ -530,7 +530,7 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 			using(_c.LogBeginScope($"Verifying token:{token ?? "null"})..."))
 			{
 				token = token.Trim();
-				token = InfoCompass.World.Common.Helper.CreateHashFromPassword(token ?? "");
+				token = MyCompany.World.Common.Helper.CreateHashFromPassword(token ?? "");
 				PasswordResetRequest? passwordResetRequestFromDb = (await _serviceForPasswordResetRequests.Get<PasswordResetRequest>(prr => prr.Token == token)).SingleOrDefault();
 				if(passwordResetRequestFromDb == null)
 				{
@@ -595,7 +595,7 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 					_c.Log($"Request={Json.Serialize<ChangePasswordUsingTokenRequest>(request)}...");
 
 					_c.Log("Verifying token...");
-					string token = InfoCompass.World.Common.Helper.CreateHashFromPassword(request?.Token ?? "");
+					string token = MyCompany.World.Common.Helper.CreateHashFromPassword(request?.Token ?? "");
 					PasswordResetRequest? passwordResetRequestFromDb = (await _serviceForPasswordResetRequests.Get<PasswordResetRequest>(prr => prr.Token == token)).SingleOrDefault();
 					if(passwordResetRequestFromDb == null)
 					{
@@ -646,7 +646,7 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 							await _serviceForPasswordResetRequests.Update(passwordResetRequestFromDb);
 							_c.Log("Updating user record in db...");
 							user = await _serviceForUsers.GetById<User>(user.Id);
-							user.PasswordHash = InfoCompass.World.Common.Helper.CreateHashFromPassword(request.NewPassword);
+							user.PasswordHash = MyCompany.World.Common.Helper.CreateHashFromPassword(request.NewPassword);
 							user.MomentOfLastUpdate = DateTime.Now;
 							await _serviceForUsers.Update(user);
 							long logId = await _serviceForLogs.Write(LogCategoryAndTitle.UserAction__Password_Changed, _c.CurrentlyLoggedInUser, $"Password changed using token {request.Token} and passwordResetRequestId={passwordResetRequestFromDb.Id}", LogExtraColumnNames.UserId, user.Id);
@@ -706,7 +706,7 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 						{
 
 							_c.Log("Checking by old password...");
-							if(user.PasswordHash != InfoCompass.World.Common.Helper.CreateHashFromPassword(request.OldPassword))
+							if(user.PasswordHash != MyCompany.World.Common.Helper.CreateHashFromPassword(request.OldPassword))
 							{
 								r = new ServerResponse<User>(false, "Old password does not match our records. If you forgot your password log out and use Forgot password option.", null, null, errors, null, System.Net.HttpStatusCode.NotFound);
 							}
@@ -736,7 +736,7 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 
 								_c.Log("Updating user record in db...");
 								user = await _serviceForUsers.GetById<User>(user.Id);
-								user.PasswordHash = InfoCompass.World.Common.Helper.CreateHashFromPassword(request.NewPassword);
+								user.PasswordHash = MyCompany.World.Common.Helper.CreateHashFromPassword(request.NewPassword);
 								user.MomentOfLastUpdate = DateTime.Now;
 								await _serviceForUsers.Update(user);
 								_c.Log("Db records updated...");
@@ -929,9 +929,9 @@ public sealed class ServiceForUsers:InfoCompass.World.BusinessLogic.ServiceBase,
 public class MockedServiceForUsers:IServiceForUsers
 {
 	readonly ServiceForCOE _c;
-	readonly InfoCompass.World.DataAccessContracts.IServiceForUsers _serviceForUsers;
+	readonly MyCompany.World.DataAccessContracts.IServiceForUsers _serviceForUsers;
 
-	public MockedServiceForUsers(ServiceForCOE c, InfoCompass.World.DataAccessContracts.IServiceForUsers serviceForUsers)
+	public MockedServiceForUsers(ServiceForCOE c, MyCompany.World.DataAccessContracts.IServiceForUsers serviceForUsers)
 	{
 		_c = c;
 		_serviceForUsers = serviceForUsers;

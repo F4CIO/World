@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace InfoCompass.World.UiWebApi.Models;
+namespace MyCompany.World.UiWebApi.Models;
 
 public static class ServerResponseExtenders
 {

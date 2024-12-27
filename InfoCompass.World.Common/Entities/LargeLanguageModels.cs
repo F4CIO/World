@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace InfoCompass.World.Common.Entities;
+namespace MyCompany.World.Common.Entities;
 
 #pragma warning disable CS1591
 

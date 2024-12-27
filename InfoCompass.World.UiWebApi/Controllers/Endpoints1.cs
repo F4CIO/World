@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.UiWebApi.Controllers;
+﻿namespace MyCompany.World.UiWebApi.Controllers;
 
 public static class Endpoints1
 {

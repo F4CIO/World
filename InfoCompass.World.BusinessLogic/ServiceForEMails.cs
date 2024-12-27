@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
 
-namespace InfoCompass.World.BusinessLogic;
+namespace MyCompany.World.BusinessLogic;
 
 public interface IServiceForEMails
 {

@@ -1,6 +1,6 @@
 ﻿global using System.Text;
-global using InfoCompass.World.Common;
-global using InfoCompass.World.Common.Entities;
+global using MyCompany.World.Common;
+global using MyCompany.World.Common.Entities;
 global using CraftSynth.BuildingBlocks.Common;
 global using CraftSynth.BuildingBlocks.IO;
 global using CraftSynth.BuildingBlocks.Logging;

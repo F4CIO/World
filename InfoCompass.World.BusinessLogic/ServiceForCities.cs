@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.BusinessLogic;
+﻿namespace MyCompany.World.BusinessLogic;
 
 public interface IServiceForCities
 {
@@ -8,10 +8,10 @@ public interface IServiceForCities
 	Task UpdateCityIntoDb(City job);
 }
 
-public sealed class ServiceForCities:InfoCompass.World.BusinessLogic.ServiceBase, IServiceForCities
+public sealed class ServiceForCities:MyCompany.World.BusinessLogic.ServiceBase, IServiceForCities
 {
-	private readonly InfoCompass.World.DataAccessContracts.IServiceForCities _serviceForCities;
-	public ServiceForCities(ServiceForCOE c, IServiceForLogs serviceForLogs, InfoCompass.World.DataAccessContracts.IServiceForUsers serviceForUsers, InfoCompass.World.DataAccessContracts.IServiceForCities serviceForCities)
+	private readonly MyCompany.World.DataAccessContracts.IServiceForCities _serviceForCities;
+	public ServiceForCities(ServiceForCOE c, IServiceForLogs serviceForLogs, MyCompany.World.DataAccessContracts.IServiceForUsers serviceForUsers, MyCompany.World.DataAccessContracts.IServiceForCities serviceForCities)
 		: base(c, serviceForLogs, serviceForUsers)
 	{
 		_serviceForCities = serviceForCities;
@@ -79,9 +79,9 @@ public sealed class ServiceForCities:InfoCompass.World.BusinessLogic.ServiceBase
 public class MockedServiceForJobs:IServiceForCities
 {
 	readonly ServiceForCOE _c;
-	readonly InfoCompass.World.DataAccessContracts.IServiceForUsers _serviceForUsers;
+	readonly MyCompany.World.DataAccessContracts.IServiceForUsers _serviceForUsers;
 
-	public MockedServiceForJobs(ServiceForCOE c, InfoCompass.World.DataAccessContracts.IServiceForUsers serviceForUsers, InfoCompass.World.DataAccessContracts.IServiceForCities serviceForCities)
+	public MockedServiceForJobs(ServiceForCOE c, MyCompany.World.DataAccessContracts.IServiceForUsers serviceForUsers, MyCompany.World.DataAccessContracts.IServiceForCities serviceForCities)
 	{
 		_c = c;
 		_serviceForUsers = serviceForUsers;

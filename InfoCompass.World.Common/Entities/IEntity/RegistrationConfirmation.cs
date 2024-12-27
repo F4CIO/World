@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.Common.Entities;
+﻿namespace MyCompany.World.Common.Entities;
 public class RegistrationConfirmation:IEntity
 {
 	public long Id { get; set; }

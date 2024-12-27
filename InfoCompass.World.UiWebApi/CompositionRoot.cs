@@ -1,17 +1,17 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using InfoCompass.World.BusinessLogic;
-using InfoCompass.World.UiWebApi.Logic;
-using InfoCompass.World.UiWebApi.Models;
+using MyCompany.World.BusinessLogic;
+using MyCompany.World.UiWebApi.Logic;
+using MyCompany.World.UiWebApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Serilog;
-using static InfoCompass.World.Common.ServiceForCOE;
-using Error = InfoCompass.World.Common.Entities.Error;
+using static MyCompany.World.Common.ServiceForCOE;
+using Error = MyCompany.World.Common.Entities.Error;
 
-namespace InfoCompass.World.UiWebApi;
+namespace MyCompany.World.UiWebApi;
 
 internal class CompositionRoot
 {
@@ -121,12 +121,12 @@ internal class CompositionRoot
 					return settings;
 				};
 				IHttpContextAccessor httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
-				User currentlyLoggedInUser = InfoCompass.World.UiWebApi.Logic.HandlerForAuthentication.CurrentlyLoggedInUser;
+				User currentlyLoggedInUser = MyCompany.World.UiWebApi.Logic.HandlerForAuthentication.CurrentlyLoggedInUser;
 				var c = new ServiceForCOE(provider, serviceScopeFactory, serviceForConfiguration, serviceForLogger, onReviewCurrentlyLoggedInUser, onInitSettings, httpContextAccessor, currentlyLoggedInUser, null, true, null);
 				return c;
 			}
 			);
-			InfoCompass.World.BusinessLogic.CompositionRoot.Compose(context, services, isTesting);
+			MyCompany.World.BusinessLogic.CompositionRoot.Compose(context, services, isTesting);
 			services.AddScoped<IServiceForBase, ServiceForBase>();
 			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 			//	.AddCookie(options =>
@@ -298,12 +298,12 @@ internal class CompositionRoot
 					return settings;
 				};
 				IHttpContextAccessor httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
-				User currentlyLoggedInUser = InfoCompass.World.UiWebApi.Logic.HandlerForAuthentication.CurrentlyLoggedInUser;
+				User currentlyLoggedInUser = MyCompany.World.UiWebApi.Logic.HandlerForAuthentication.CurrentlyLoggedInUser;
 				var c = new ServiceForCOE(provider, serviceScopeFactory, serviceForConfiguration, serviceForLogger, onReviewCurrentlyLoggedInUser, onInitSettings, httpContextAccessor, currentlyLoggedInUser, null, true, null);
 				return c;
 			}
 			);
-			InfoCompass.World.BusinessLogic.CompositionRoot.Compose(context, services, isTesting);
+			MyCompany.World.BusinessLogic.CompositionRoot.Compose(context, services, isTesting);
 			services.AddScoped<IServiceForBase, ServiceForBase>();
 			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 			//	.AddCookie(options =>

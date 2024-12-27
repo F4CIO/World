@@ -1,10 +1,10 @@
-﻿using InfoCompass.World.BusinessLogic;
-using InfoCompass.World.Public.Api;
-using InfoCompass.World.UiWebApi.Models;
+﻿using MyCompany.World.BusinessLogic;
+using MyCompany.World.Public.Api;
+using MyCompany.World.UiWebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InfoCompass.World.UiWebApi.Controllers;
+namespace MyCompany.World.UiWebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

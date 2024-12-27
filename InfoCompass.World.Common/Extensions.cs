@@ -1,3 +1,3 @@
-﻿namespace InfoCompass.World.Common;
+﻿namespace MyCompany.World.Common;
 
 

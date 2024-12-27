@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.Common;
+﻿namespace MyCompany.World.Common;
 
 public static class ClassExtenders
 {

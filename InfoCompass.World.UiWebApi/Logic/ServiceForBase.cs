@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
-using InfoCompass.World.UiWebApi.Models;
-using Error = InfoCompass.World.Common.Entities.Error;
-using Errors = InfoCompass.World.Common.Entities.Errors;
+using MyCompany.World.UiWebApi.Models;
+using Error = MyCompany.World.Common.Entities.Error;
+using Errors = MyCompany.World.Common.Entities.Errors;
 
-namespace InfoCompass.World.UiWebApi.Logic;
+namespace MyCompany.World.UiWebApi.Logic;
 
 public interface IServiceForBase
 {
@@ -15,8 +15,8 @@ public interface IServiceForBase
 public class ServiceForBase:IServiceForBase
 {
 	private ServiceForCOE _c;
-	private InfoCompass.World.BusinessLogic.IServiceForLogs _serviceForLog;
-	public ServiceForBase(ServiceForCOE c, InfoCompass.World.BusinessLogic.IServiceForLogs serviceForLogs)
+	private MyCompany.World.BusinessLogic.IServiceForLogs _serviceForLog;
+	public ServiceForBase(ServiceForCOE c, MyCompany.World.BusinessLogic.IServiceForLogs serviceForLogs)
 	{
 		_c = c;
 		_serviceForLog = serviceForLogs;

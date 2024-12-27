@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.DataAccessContracts;
+﻿namespace MyCompany.World.DataAccessContracts;
 
 public interface IServiceForCities:IServiceForEntities
 {

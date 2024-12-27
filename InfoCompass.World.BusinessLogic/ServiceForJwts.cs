@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.BusinessLogic;
+﻿namespace MyCompany.World.BusinessLogic;
 
 public interface IServiceForJwts
 {
@@ -9,12 +9,12 @@ public interface IServiceForJwts
 	Task<List<Jwt>> DeactivateAllTokens(long userId, JwtReasonForDeactivation jwtReasonForDeactivation, bool throwExceptionIfNotFound);
 }
 
-public sealed class ServiceForJwts:InfoCompass.World.BusinessLogic.ServiceBase, IServiceForJwts
+public sealed class ServiceForJwts:MyCompany.World.BusinessLogic.ServiceBase, IServiceForJwts
 {
 	readonly ServiceForCOE _c;
-	readonly InfoCompass.World.DataAccessContracts.IServiceForJwts _serviceForJwts;
+	readonly MyCompany.World.DataAccessContracts.IServiceForJwts _serviceForJwts;
 
-	public ServiceForJwts(ServiceForCOE c, IServiceForLogs serviceForLogs, InfoCompass.World.DataAccessContracts.IServiceForUsers serviceForUsers, InfoCompass.World.DataAccessContracts.IServiceForJwts serviceForJwts)
+	public ServiceForJwts(ServiceForCOE c, IServiceForLogs serviceForLogs, MyCompany.World.DataAccessContracts.IServiceForUsers serviceForUsers, MyCompany.World.DataAccessContracts.IServiceForJwts serviceForJwts)
 		: base(c, serviceForLogs, serviceForUsers)
 	{
 		_c = c;
@@ -140,9 +140,9 @@ public sealed class ServiceForJwts:InfoCompass.World.BusinessLogic.ServiceBase, 
 public class MockedServiceForJwts:IServiceForJwts
 {
 	readonly ServiceForCOE _c;
-	readonly InfoCompass.World.DataAccessContracts.IServiceForJwts _serviceForJwts;
+	readonly MyCompany.World.DataAccessContracts.IServiceForJwts _serviceForJwts;
 
-	public MockedServiceForJwts(ServiceForCOE c, InfoCompass.World.DataAccessContracts.IServiceForJwts serviceForJwts)
+	public MockedServiceForJwts(ServiceForCOE c, MyCompany.World.DataAccessContracts.IServiceForJwts serviceForJwts)
 	{
 		_c = c;
 		_serviceForJwts = serviceForJwts;

@@ -4,7 +4,7 @@
 //using tsdashboard.Models.Technician;
 //using WebMatrix.WebData;
 
-namespace InfoCompass.World.UiWebApi.Logic;
+namespace MyCompany.World.UiWebApi.Logic;
 
 public class HandlerForAuthentication
 {

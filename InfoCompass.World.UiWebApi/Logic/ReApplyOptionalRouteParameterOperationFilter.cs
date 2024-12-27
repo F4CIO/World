@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace InfoCompass.World.UiWebApi.Logic;
+namespace MyCompany.World.UiWebApi.Logic;
 
 /// <summary>
 /// Source: https://www.seeleycoder.com/blog/optional-route-parameters-with-swagger-asp-net-core/

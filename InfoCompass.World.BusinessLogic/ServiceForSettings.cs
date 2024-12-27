@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.BusinessLogic;
+﻿namespace MyCompany.World.BusinessLogic;
 
 public interface IServiceForSettings
 {
@@ -9,9 +9,9 @@ public interface IServiceForSettings
 public sealed class ServiceForSettings:IServiceForSettings
 {
 	//readonly ServiceForCOE _c;
-	readonly InfoCompass.World.DataAccessContracts.IServiceForSettings _serviceForSettings;
+	readonly MyCompany.World.DataAccessContracts.IServiceForSettings _serviceForSettings;
 
-	public ServiceForSettings(/*ServiceForCOE c, */InfoCompass.World.DataAccessContracts.IServiceForSettings serviceForSettings)
+	public ServiceForSettings(/*ServiceForCOE c, */MyCompany.World.DataAccessContracts.IServiceForSettings serviceForSettings)
 	{
 		//_c = c;
 		_serviceForSettings = serviceForSettings;
@@ -32,9 +32,9 @@ public sealed class ServiceForSettings:IServiceForSettings
 
 public class MockedServiceForSettings:IServiceForSettings
 {
-	readonly InfoCompass.World.DataAccessContracts.IServiceForSettings _serviceForSettings;
+	readonly MyCompany.World.DataAccessContracts.IServiceForSettings _serviceForSettings;
 
-	public MockedServiceForSettings(InfoCompass.World.DataAccessContracts.IServiceForSettings serviceForSettings)
+	public MockedServiceForSettings(MyCompany.World.DataAccessContracts.IServiceForSettings serviceForSettings)
 	{
 		_serviceForSettings = serviceForSettings;
 	}

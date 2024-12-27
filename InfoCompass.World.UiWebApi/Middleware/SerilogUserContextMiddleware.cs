@@ -1,6 +1,6 @@
 ﻿using Serilog.Context;
 
-namespace InfoCompass.World.UiWebApi.Middleware;
+namespace MyCompany.World.UiWebApi.Middleware;
 
 public class SerilogUserContextMiddleware
 {

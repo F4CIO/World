@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace InfoCompass.World.UiWebApi.Logic;
+namespace MyCompany.World.UiWebApi.Logic;
 
 /// <summary>
 /// <see cref="IUrlHelper"/> extension methods.

@@ -1,7 +1,7 @@
 ﻿using CraftSynth.BuildingBlocks.Common.Patterns;
-using InfoCompass.World.DataAccessContracts;
+using MyCompany.World.DataAccessContracts;
 
-namespace InfoCompass.World.DataAccessByFileSystem;
+namespace MyCompany.World.DataAccessByFileSystem;
 
 public class ServiceForEntities:ServiceBase, IServiceForEntities
 {

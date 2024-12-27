@@ -2,7 +2,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 
-namespace InfoCompass.World.Common.Entities;
+namespace MyCompany.World.Common.Entities;
 
 public enum LogCategoryAndTitle
 {

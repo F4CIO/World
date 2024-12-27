@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using InfoCompass.World.Public.Api;
+using MyCompany.World.Public.Api;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InfoCompass.World.UiWebApi.Controllers;
+namespace MyCompany.World.UiWebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

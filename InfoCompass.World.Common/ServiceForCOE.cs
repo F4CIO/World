@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace InfoCompass.World.Common;
+namespace MyCompany.World.Common;
 
 /// <summary>
 /// This class is simple container for system-wide properties like currentlyLoggedInUser, log etc. 

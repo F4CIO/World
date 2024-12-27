@@ -1,4 +1,4 @@
-﻿namespace InfoCompass.World.Common.Entities;
+﻿namespace MyCompany.World.Common.Entities;
 
 [Serializable]
 public class UserAndJwt:User

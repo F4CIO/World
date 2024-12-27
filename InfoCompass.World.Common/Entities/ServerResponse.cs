@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace InfoCompass.World.Common.Entities;
+namespace MyCompany.World.Common.Entities;
 
 public class ServerResponse<T>
 {

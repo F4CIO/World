@@ -1,4 +1,4 @@
-namespace InfoCompass.World.UiWebApi;
+namespace MyCompany.World.UiWebApi;
 
 public class WeatherForecast
 {

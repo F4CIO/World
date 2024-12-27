@@ -1,7 +1,7 @@
 ﻿using System.Net.Mail;
 using Microsoft.Extensions.Logging;
 
-namespace InfoCompass.World.BusinessLogic;
+namespace MyCompany.World.BusinessLogic;
 
 
 public interface IServiceForLogs //: GenericHandlerInterface<YouTrend.Common.Entities.Log>

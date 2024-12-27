@@ -1,8 +1,8 @@
-﻿using InfoCompass.World.UiWebApi.Logic;
-using InfoCompass.World.UiWebApi.Models;
+﻿using MyCompany.World.UiWebApi.Logic;
+using MyCompany.World.UiWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InfoCompass.World.Public.Api;
+namespace MyCompany.World.Public.Api;
 
 
 public class BaseController:Microsoft.AspNetCore.Mvc.ControllerBase

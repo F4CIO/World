@@ -1,7 +1,7 @@
-﻿using InfoCompass.World.DataAccessContracts;
+﻿using MyCompany.World.DataAccessContracts;
 using Microsoft.Extensions.Configuration;
 
-namespace InfoCompass.World.DataAccessByFileSystem;
+namespace MyCompany.World.DataAccessByFileSystem;
 
 public class CompositionRoot
 {

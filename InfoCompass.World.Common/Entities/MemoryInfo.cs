@@ -1,7 +1,7 @@
 ﻿//using Microsoft.VisualBasic.Devices;
 using System.Diagnostics;
 
-namespace InfoCompass.World.Common.Entities;
+namespace MyCompany.World.Common.Entities;
 
 [Serializable]
 public class MemoryInfo

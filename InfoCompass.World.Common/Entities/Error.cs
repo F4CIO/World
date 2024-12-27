@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Runtime.Serialization;
 
-namespace InfoCompass.World.Common.Entities;
+namespace MyCompany.World.Common.Entities;
 
 public class Errors:List<Error>
 {

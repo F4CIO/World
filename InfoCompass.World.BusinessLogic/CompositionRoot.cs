@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace InfoCompass.World.BusinessLogic;
+namespace MyCompany.World.BusinessLogic;
 
 public class CompositionRoot
 {
@@ -9,17 +9,17 @@ public class CompositionRoot
 		Configuration? configuration = context.Configuration.GetSection("Main").Get<Configuration>();
 
 		//this is the only point to change when changing underlying data provider 
-		InfoCompass.World.DataAccessByFileSystem.CompositionRoot.Compose(context, services, isTesting);
+		MyCompany.World.DataAccessByFileSystem.CompositionRoot.Compose(context, services, isTesting);
 
 		if(isTesting)
 		{
-			services.AddScoped<IServiceForUsers, InfoCompass.World.BusinessLogic.MockedServiceForUsers>();
-			services.AddScoped<IServiceForLogs, InfoCompass.World.BusinessLogic.MockedServiceForLogs>();
-			services.AddScoped<IServiceForJwts, InfoCompass.World.BusinessLogic.MockedServiceForJwts>();
-			services.AddScoped<InfoCompass.World.BusinessLogic.IServiceForSettings, InfoCompass.World.BusinessLogic.ServiceForSettings>();
+			services.AddScoped<IServiceForUsers, MyCompany.World.BusinessLogic.MockedServiceForUsers>();
+			services.AddScoped<IServiceForLogs, MyCompany.World.BusinessLogic.MockedServiceForLogs>();
+			services.AddScoped<IServiceForJwts, MyCompany.World.BusinessLogic.MockedServiceForJwts>();
+			services.AddScoped<MyCompany.World.BusinessLogic.IServiceForSettings, MyCompany.World.BusinessLogic.ServiceForSettings>();
 			//services.AddOpenAIService(s => { s.ApiKey = settings.OpenAiApiKey; s.ApiRequestTimeout = TimeSpan.FromMinutes(settings.OpenAiRequestTimeoutInMinutes);});	
-			services.AddScoped<InfoCompass.World.BusinessLogic.IServiceForEMails, InfoCompass.World.BusinessLogic.MockedServiceForEMails>();
-			services.AddScoped<InfoCompass.World.BusinessLogic.IServiceForCities, InfoCompass.World.BusinessLogic.MockedServiceForJobs>();
+			services.AddScoped<MyCompany.World.BusinessLogic.IServiceForEMails, MyCompany.World.BusinessLogic.MockedServiceForEMails>();
+			services.AddScoped<MyCompany.World.BusinessLogic.IServiceForCities, MyCompany.World.BusinessLogic.MockedServiceForJobs>();
 		}
 		else
 		{
@@ -31,11 +31,11 @@ public class CompositionRoot
 			//	var settins = s.GetRequiredService<InfoCompass.World.DataAccessContracts.IServiceForSettings>();
 			//	return new ServiceForBetalgoOpenAI(s, context.Configuration.GetSection("Main").Get<IOptions<Configuration>>(), settins, new OpenAIService())
 			//});				
-			services.AddScoped<InfoCompass.World.BusinessLogic.IServiceForSettings, InfoCompass.World.BusinessLogic.ServiceForSettings>();
+			services.AddScoped<MyCompany.World.BusinessLogic.IServiceForSettings, MyCompany.World.BusinessLogic.ServiceForSettings>();
 			//services.AddOpenAIService(s =>{	s.ApiKey = settings2.OpenAiApiKey; s.ApiRequestTimeout = TimeSpan.FromMinutes(settings2.OpenAiRequestTimeoutInMinutes);});		
 			//
-			services.AddScoped<InfoCompass.World.BusinessLogic.IServiceForEMails, InfoCompass.World.BusinessLogic.ServiceForEMails>();
-			services.AddScoped<InfoCompass.World.BusinessLogic.IServiceForCities, InfoCompass.World.BusinessLogic.ServiceForCities>();
+			services.AddScoped<MyCompany.World.BusinessLogic.IServiceForEMails, MyCompany.World.BusinessLogic.ServiceForEMails>();
+			services.AddScoped<MyCompany.World.BusinessLogic.IServiceForCities, MyCompany.World.BusinessLogic.ServiceForCities>();
 		}
 	}
 }

@@ -1,15 +1,15 @@
-﻿using Error = InfoCompass.World.Common.Entities.Error;
-using Errors = InfoCompass.World.Common.Entities.Errors;
+﻿using Error = MyCompany.World.Common.Entities.Error;
+using Errors = MyCompany.World.Common.Entities.Errors;
 
-namespace InfoCompass.World.BusinessLogic;
+namespace MyCompany.World.BusinessLogic;
 
 public class ServiceBase
 {
 	protected readonly ServiceForCOE _c;
-	protected readonly InfoCompass.World.BusinessLogic.IServiceForLogs _serviceForLogs;
-	protected readonly InfoCompass.World.DataAccessContracts.IServiceForUsers _serviceForUsers;
+	protected readonly MyCompany.World.BusinessLogic.IServiceForLogs _serviceForLogs;
+	protected readonly MyCompany.World.DataAccessContracts.IServiceForUsers _serviceForUsers;
 
-	public ServiceBase(ServiceForCOE c, IServiceForLogs serviceForLogs, InfoCompass.World.DataAccessContracts.IServiceForUsers serviceForUsers, long? userIdForBackgroundTask = null)
+	public ServiceBase(ServiceForCOE c, IServiceForLogs serviceForLogs, MyCompany.World.DataAccessContracts.IServiceForUsers serviceForUsers, long? userIdForBackgroundTask = null)
 	{
 		_c = c;
 		_serviceForUsers = serviceForUsers;
@@ -41,7 +41,7 @@ public class ServiceBase
 		}
 	}
 
-	protected async Task HandleExceptionOnThisLayer(Exception e, string details, InfoCompass.World.Common.Entities.LogExtraColumnNames? logExtraColumnName = null, int? logExtraColumnValue = null, InfoCompass.World.Common.Entities.LogExtraColumnNames? logExtraColumn2Name = null, int? logExtraColumn2Value = null, bool propagate = true)
+	protected async Task HandleExceptionOnThisLayer(Exception e, string details, MyCompany.World.Common.Entities.LogExtraColumnNames? logExtraColumnName = null, int? logExtraColumnValue = null, MyCompany.World.Common.Entities.LogExtraColumnNames? logExtraColumn2Name = null, int? logExtraColumn2Value = null, bool propagate = true)
 	{
 		if(e is Error)
 		{

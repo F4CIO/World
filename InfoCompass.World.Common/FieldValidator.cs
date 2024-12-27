@@ -1,7 +1,7 @@
 ﻿using CraftSynth.BuildingBlocks;
-using Errors = InfoCompass.World.Common.Entities.Errors;
+using Errors = MyCompany.World.Common.Entities.Errors;
 
-namespace InfoCompass.World.Common;
+namespace MyCompany.World.Common;
 
 public static class FieldValidator
 {
